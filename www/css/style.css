@@ -1,0 +1,114 @@
+ion-nav-view
+{
+	background: white url(../img/bg-janssen.jpg) center no-repeat;
+	background-size: 13% auto;
+}
+
+.pane,
+.view,
+.item-complex .item-content,
+.item
+{
+	background: none;
+}
+
+
+body, h1, h2, h3, h4, h5, h6
+{
+	font-family: "Berlin Sans FB", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+}
+
+p.center
+{
+	text-align: center;
+}
+
+.muted
+{
+	color: grey;
+}
+
+.error
+{
+	color: red;
+}
+
+.item#location-search
+{
+	height: 47px;
+}
+
+.item#location-search select
+{
+	width: 100%;
+	max-width: 200%;
+	text-align: left;
+	direction: ltr;
+}
+
+.full-avatar
+{
+	max-width: 150px;
+}
+
+.green-btn
+{
+	background-color: #498f24;
+	color: white;
+}
+
+.red-btn
+{
+	background-color: #cc2311;
+	color: white;
+}
+
+label.item-input-wrapper.search
+{
+	background-color: white;
+}
+
+.item-avatar .item-content img:first-child {
+	max-height: 66px !important;
+	max-width: 44px !important;
+	top: 5px !important;
+}
+
+.bar .title
+{
+	font-size: 20px;
+}
+
+.tab-item
+{
+	font-size: 17px;
+}
+
+.item h2
+{
+	font-size: 18px;
+	color: black;
+}
+
+h2
+{
+	color: #145fd7;
+}
+
+.item-content a
+{
+	color: black;
+}
+
+.login-form button[type=submit] {
+	min-height: 37px;
+}
+
+.login-form .list {
+	margin-bottom: 10px;
+}
+
+.meeting-list .item-avatar .item-content img:first-child {
+	min-height: 76px !important;
+	min-width: 51px !important;
+}

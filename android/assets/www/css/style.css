@@ -1,0 +1,49 @@
+p.center
+{
+	text-align: center;
+}
+
+.muted
+{
+	color: grey;
+}
+
+.error
+{
+	color: red;
+}
+
+.item#location-search
+{
+	height: 47px;
+}
+
+.item#location-search select
+{
+	width: 100%;
+	max-width: 200%;
+	text-align: left;
+	direction: ltr;
+}
+
+.full-avatar
+{
+	max-width: 100px;
+}
+
+.green-btn
+{
+	background-color: #498f24;
+	color: white;
+}
+
+.red-btn
+{
+	background-color: #cc2311;
+	color: white;
+}
+
+label.item-input-wrapper.search
+{
+	background-color: white;
+}

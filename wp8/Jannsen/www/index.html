@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html ng-app="ionicApp">
+<head>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width" />
+
+    <title>janssen-cns-app</title>
+
+	<!-- <script src="http://localhost:8080/target/target-script-min.js#anonymous"></script> -->
+	
+    <link href="lib/ionic/css/ionic.min.css" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet" />
+    <!--[if IE]><link href="css/wp8.css" rel="stylesheet" /><![endif]-->
+
+    <script src="lib/ionic/js/ionic.bundle.min.js"></script>
+    <script src="lib/ionic/js/angular/angular-resource.min.js"></script>
+    <script src="lib/angular-base64/angular-base64.min.js"></script>
+    <script src="script.js"></script>
+    <script src="services.js"></script>
+    <!--<script src="factories.js"></script>-->
+	  <script src="lib/cns/services/baseservice.js"></script>
+    <script src="lib/cns/services/locations.js"></script>
+    <script src="lib/cns/services/meetings.js"></script>
+    <script src="lib/cns/services/registrations.js"></script>
+    <script src="lib/cns/services/users.js"></script>
+
+</head>
+
+<body>
+
+<div ng-controller="MainCtrl">
+    <ion-nav-view></ion-nav-view>
+</div>
+
+<script id="cns.html" type="text/ng-template">
+    <ion-side-menus>
+      <ion-side-menu side="left">
+        <ul class="list">
+          <li class="item" ng-click="profile()">Profile</li>
+          <li class="item" ng-show="roleService.ifAdmin()" ng-click="locations()">Locations</li>
+          <li class="item" ng-click="logout()">Log out</li>
+        </ul>
+      </ion-side-menu>
+        <ion-side-menu-content>
+            <ion-nav-bar class="bar-positive"></ion-nav-bar>
+            <ion-nav-buttons side="left"></ion-nav-buttons>
+            <ion-nav-view name="menuContent"></ion-nav-view>
+        </ion-side-menu-content>
+    </ion-side-menus>
+</script>
+
+<script id="directory.html" type="text/ng-template">
+    <ion-view title="CNS Directory">
+        <ion-tabs class="tabs-striped tabs-top tabs-background-positive tabs-light">
+          <ion-tab title="Team meetings">
+            <ion-content>
+                <ion-nav-buttons side="left">
+                  <button class="button button-icon button-clear ion-ios7-gear-outline" ng-click="settings()"></button>
+                  <button ng-show="roleService.ifMeetingAdmin()" class="button button-icon button-clear ion-ios7-plus-empty" ng-click="addMeeting()"></button>
+                </ion-nav-buttons>
+                <ion-nav-buttons side="right">
+                  <button class="button button-icon button-clear ion-ios7-search" ng-click="meetingSearch()"></button>
+                </ion-nav-buttons>
+                <ion-list>
+                  <ion-item ng-repeat="item in meetings" class="item item-avatar" href="#/meeting/{{item.Id}}">
+					<img src="https://cnsdirectory.optimalstrategix.com/pics/meetingpics/{{item.Id}}.png" />
+                    <h2>{{item.Name}}</h2>
+                    <p>{{item.Location.Name}}</p>
+                    <p>{{item.Date | date:'medium'}}</p>
+                  </ion-item>
+                </ion-list>
+				<button ng-hide="meetingsLoaded" class="button button-block button-light" ng-click="loadMoreMeetings()">Load more</button>
+            </ion-content> 
+          </ion-tab>
+          <ion-tab title="Team members">
+            <ion-content>
+                <ion-nav-buttons side="left">
+                  <button class="button button-icon button-clear ion-ios7-gear-outline" ng-click="settings()"></button>
+                  <button ng-show="roleService.ifAdmin()" class="button button-icon button-clear ion-ios7-plus-empty" ng-click="addMember()"></button>
+                </ion-nav-buttons>
+                <ion-nav-buttons side="right">
+                  <button class="button button-icon button-clear ion-ios7-search" ng-click="teamMemberSearch()"></button>
+                </ion-nav-buttons>
+                <ion-list>
+                  <ion-item ng-repeat="item in users" class="item item-avatar" href="#/team-member/{{item.Id}}">
+                    <img src="https://cnsdirectory.optimalstrategix.com/pics/userpics/{{item.Id}}.png" />
+                    <h2>{{item.FirstName}} {{item.LastName}}</h2>
+                    <p>{{item.Email}} <a href="mailto:{{item.Email}}"><i class="icon ion-email"></i></a></p>
+                  </ion-item>
+                </ion-list>
+				<button ng-hide="membersLoaded" class="button button-block button-light" ng-click="loadMoreMembers()">Load more</button>
+            </ion-content>           
+          </ion-tab>
+        </ion-tabs>
+    </ion-view>
+</script>
+
+<script id="meeting.html" type="text/ng-template">
+    <ion-view title="{{meeting.Name}}">
+        <ion-content padding="true">
+            <ion-nav-buttons side="left">
+                <button class="button button-icon button-clear ion-navicon" ng-click="menu()"></button>
+            </ion-nav-buttons>
+      			<div>
+      				<p class="center"><img class="full-avatar" src="https://cnsdirectory.optimalstrategix.com/pics/meetingpics/{{meeting.Id}}.png" /></p>
+      				<h2>{{meeting.Name}}</h2>
+      				<p>{{meeting.Date | date:'medium'}}</p>
+      			</div>
+            <p class="padding-top">Attendees:</p>
+            <label class="item item-input">
+              <i class="icon ion-search placeholder-icon"></i>
+              <input type="text" placeholder="Search for Attendee" ng-model="search"/>
+            </label>
+            <br/>
+            <ion-list>
+                <ion-item ng-repeat="item in meeting.Registrations | fullNameFilter:search" class="item item-avatar">
+                    <img src="https://cnsdirectory.optimalstrategix.com/pics/userpics/{{item.User.Id}}.png" />
+                    <h2>{{item.User.FirstName}} {{item.User.LastName}}</h2>
+                    <p ng-show="item.Notes">{{item.Notes}}</p>
+                    <p ng-show="item.Notes2">{{item.Notes2}}</p>
+                    <p ng-show="item.Notes3">{{item.Notes3}}</p>
+                </ion-item>
+            </ion-list>
+            <br/>&nbsp;
+			<br/>&nbsp;
+        </ion-content>
+        <div ng-show="roleService.ifMeetingAdmin()" class="tabs">
+          <a class="tab-item green-btn" ng-click="edit()">Edit</a>
+          <a class="tab-item" ng-click="delete()">Delete</a>
+        </div>
+    </ion-view>
+</script>
+
+<script id="meeting-edit.html" type="text/ng-template">
+    <ion-view title="{{meeting.Name || 'New Meeting'}}">
+        <ion-content>
+            <p class="center"><img class="full-avatar" src="https://cnsdirectory.optimalstrategix.com/pics/meetingpics/{{meeting.Id}}.png" /></p>
+            <div class="list">
+              <label class="item item-input item-stacked-label">
+                <span class="input-label">Name</span>
+                <input type="text" placeholder="" ng-model="meeting.Name" />
+              </label>
+			  <label class="item item-input item-stacked-label">
+                <span class="input-label">Image</span><br/>
+				<input type="file" id="image" />
+              </label>
+              <label class="item item-input item-stacked-label">
+                <span class="input-label">Time</span>
+                <input type="time" placeholder="" ng-model="meeting.Time" required="true" />
+              </label>
+              <label class="item item-input item-stacked-label">
+                <span class="input-label">Date</span>
+                <input type="date" placeholder="" ng-model="meeting.Date" required="true" />
+              </label>
+            </div>
+            <div class="padding">
+                <p>Attendees:</p>
+                <ion-list>
+                    <ion-item ng-repeat="item in meeting.Registrations" class="item item-avatar item-icon-right">
+                        <img src="https://cnsdirectory.optimalstrategix.com/pics/userpics/{{item.User.Id}}.png" />
+                        <h2>{{item.User.FirstName}} {{item.User.LastName}}</h2>
+                        <p ng-show="item.Notes">{{item.Notes}}</p>
+                        <p ng-show="item.Notes2">{{item.Notes2}}</p>
+                        <p ng-show="item.Notes3">{{item.Notes3}}</p>
+                        <i class="icon ion-trash-a" ng-click="deleteAttendee({{item.User.Id}})"></i>
+                    </ion-item>
+                </ion-list>
+                <button class="button button-block button-light" ng-click="addAttendees()"><i class="ion-plus-round"></i> Add attendee</button>
+				
+				<label>
+					<div class="button button-block button-light"><i class="ion-document-text"></i> Upload list of Attendees</div>
+					<input ng-hide="true" type="file" id="xls" ng-model="xls" onchange="angular.element(this).scope().uploadListAttendees()" />
+				</label>
+				<br/><br/><br/>
+            </div>
+        </ion-content>
+        <div class="tabs">
+          <a class="tab-item green-btn" ng-click="save()">Save</a>
+          <a class="tab-item" ng-click="cancel()">Cancel</a>
+        </div>
+    </ion-view>
+</script>
+
+<script id="select-attendees.html" type="text/ng-template">
+    <ion-view title="Select Attendees">
+		<ion-content>
+      <div class="padding-bottom select"> 
+        <div class="list list-inset">
+          <label class="item item-input item-select" id="location-search">
+            <select placeholder="Location" ng-model="search.location" ng-options="loc.Id as loc.Name for loc in locations" ng-change="onChange()"></select>
+          </label>
+          <div class="item item-input-inset">
+            <label class="item-input-wrapper search">
+              <i class="icon ion-search placeholder-icon"></i>
+              <input id="memberSearchText" type="text" placeholder="Email or Name Part" ng-model="search.text" ng-change="onChange()" />
+            </label>
+            <button class="button button-small" ng-click="blur()">Search</button>
+          </div>
+        </div>  
+      </div>
+      <div class="padding-left muted" ng-show="notes">{{notes}}</div>
+      <br/>
+			<ion-list class="select-attendees">
+				<ion-item class="item item-avatar item-checkbox" ng-repeat="member in members">
+					<label class="checkbox"><input type="checkbox" name="members[]" ng-model="member.selected" /></label>
+					<!-- <img src="img/ionic.png"> -->
+					<h2>{{member.FirstName}} {{member.LastName}}</h2>
+					<p>{{member.Email}}</p>
+				</ion-item>
+			</ion-list>
+			<button ng-hide="membersLoaded" class="button button-block button-light" ng-click="loadMoreMembers()">Load more</button>
+      <br/><br/>
+		</ion-content>
+		<div class="tabs">
+			<a class="tab-item green-btn" ng-click="select()">Select</a>
+			<a class="tab-item" ng-click="cancel()">Cancel</a>
+		</div>
+    </ion-view>
+</script>
+
+<script id="team-member.html" type="text/ng-template">
+    <ion-view title="{{user.FirstName + ' ' + user.LastName}}">
+        <ion-content padding="true">
+            <ion-nav-buttons side="left">
+                <button class="button button-icon button-clear ion-navicon" ng-click="menu()"></button>
+            </ion-nav-buttons>
+            <div>
+                <p class="center"><img class="full-avatar" src="https://cnsdirectory.optimalstrategix.com/pics/userpics/{{user.Id}}.png" /></p>
+                <h2>{{user.FirstName}} {{user.LastName}}</h2>
+                <p>{{user.Email}}</p>
+            </div>
+            <p>Phone: <b>{{user.Phone}}</b></p>
+            <p>Location: <b>{{user.Location.Name}}</b></p>
+            <p>Role: <b>{{roles[user.Role]}}</b></p>
+        </ion-content>
+        <div ng-show="roleService.ifAdmin()" class="tabs">
+          <a class="tab-item green-btn" ng-click="edit()">Edit</a>
+          <a class="tab-item" ng-click="delete()">Delete</a>
+        </div>
+    </ion-view>
+</script>
+
+<script id="team-member-edit.html" type="text/ng-template">
+    <ion-view title="User edit">
+        <ion-content>
+            <br/><p class="center"><img class="full-avatar" src="https://cnsdirectory.optimalstrategix.com/pics/userpics/{{user.Id}}.png" /></p>
+            <div class="list">
+              <label class="item item-input item-stacked-label">
+                <span class="input-label">Email</span>
+                <input type="text" placeholder="mail@example.org" ng-model="user.Email" required="true" />
+              </label>
+              <label class="item item-input item-stacked-label">
+                <span class="input-label">Password</span>
+                <input type="password" placeholder="******" ng-model="user.Password" required="true" />
+              </label>
+			  <label class="item item-input item-stacked-label">
+                <span class="input-label">Image</span><br/>
+				<input type="file" id="image" />
+              </label>
+              <label class="item item-input item-stacked-label">
+                <span class="input-label">First Name</span>
+                <input type="text" placeholder="John" ng-model="user.FirstName" />
+              </label>
+              <label class="item item-input item-stacked-label">
+                <span class="input-label">Last Name</span>
+                <input type="text" placeholder="Smith" ng-model="user.LastName" />
+              </label>
+              <label class="item item-input item-stacked-label">
+                <span class="input-label">Phone</span>
+                <input type="text" placeholder="+0-000-000-0000" ng-model="user.Phone" />
+              </label>
+              <label class="item item-input item-stacked-label">
+                <span class="input-label">Location</span>
+                <br/>
+				<select ng-model="user.LocationId" ng-options="loc.Id as loc.Name for loc in locations"></select>
+              </label>
+              <label class="item item-input item-stacked-label">
+                <span class="input-label">Role</span>
+                <br/>
+                <select ng-model="user.Role" ng-options="role.Id as role.Name for role in roles"></select>
+              </label>
+			  <br/> <br/> <br/>
+            </div>
+        </ion-content>
+        <div class="tabs">
+          <a class="tab-item green-btn" ng-click="save()">Save</a>
+          <a class="tab-item" ng-click="cancel()">Cancel</a>
+        </div>
+    </ion-view>
+</script>
+
+<script id="login.html" type="text/ng-template">
+    <ion-view title="CNS Directory">
+        <ion-content>
+            <p class="center padding-vertical"><img src="img/logo-janssen.png" /></p>
+			<div class="error padding-horizontal" ng-show="error">{{error}}</div>
+			<form ng-submit="login()">
+				<div class="list list-inset">
+				  <label class="item item-input">
+					<input type="email" placeholder="Email" ng-model="auth.Email" />
+				  </label>
+				  <label class="item item-input">
+					<input type="password" placeholder="Password" ng-model="auth.Password" />
+				  </label>
+				</div>
+				<div class="padding">
+					<button class="button button-balanced button-block" type="submit">Login</button>
+				</div>
+			</form>
+        </ion-content>
+    </ion-view>
+</script>
+
+<script id="meeting-search.html" type="text/ng-template">
+    <ion-view title="Meeting Search">
+		<ion-content>
+			<ion-nav-buttons side="left">
+				<button class="button button-icon button-clear ion-navicon" ng-click="menu()"></button>
+			</ion-nav-buttons>			
+			<div class="list">
+				<div class="item item-input-inset">
+					<label class="item-input-wrapper search">
+						<i class="icon ion-search placeholder-icon"></i>
+						<input id="meetingSearchText" type="text" placeholder="" ng-model="search.text" ng-change="onChange()" />
+					</label>
+					<button class="button button-small" ng-click="blur()">Search</button>
+				</div>
+			</div>			
+			<div class="padding-left muted" ng-show="notes">{{notes}}</div>
+			<ion-list>
+				<ion-item ng-repeat="item in meetings" class="item item-avatar" href="#/meeting/{{item.Id}}">
+					<img src="https://cnsdirectory.optimalstrategix.com/pics/meetingpics/{{item.Id}}.png" />
+					<h2>{{item.Name}}</h2>
+					<p>{{item.Location.Name}}</p>
+					<p>{{item.Date | date:'medium'}}</p>
+				</ion-item>
+			</ion-list>
+      <button ng-hide="meetingsLoaded" class="button button-block button-light" ng-click="loadMoreMeetings()">Load more</button>
+        </ion-content>
+    </ion-view>
+</script>
+
+<script id="teammember-search.html" type="text/ng-template">
+    <ion-view title="Team Member Search">
+        <ion-content>
+          <ion-nav-buttons side="left">
+              <button class="button button-icon button-clear ion-navicon" ng-click="menu()"></button>
+          </ion-nav-buttons>
+          <div class="padding-bottom select"> 
+      			<div class="list list-inset">
+      				<label class="item item-input item-select" id="location-search">
+      					<select placeholder="Location" ng-model="search.location" ng-options="loc.Id as loc.Name for loc in locations" ng-change="onChange()"></select>
+      				</label>
+      				<div class="item item-input-inset">
+      					<label class="item-input-wrapper search">
+      						<i class="icon ion-search placeholder-icon"></i>
+      						<input id="memberSearchText" type="text" placeholder="Email or Name Part" ng-model="search.text" ng-change="onChange()" />
+      					</label>
+      					<button class="button button-small" ng-click="blur()">Search</button>
+      				</div>
+      			</div>  
+          </div>
+		  
+		  
+		  <div class="padding-left muted" ng-show="notes">{{notes}}</div>
+          <ion-list>
+            <ion-item ng-repeat="item in users" class="item item-avatar" href="#/team-member/{{item.Id}}">
+			  <img src="https://cnsdirectory.optimalstrategix.com/pics/userpics/{{item.Id}}.png" />
+              <h2>{{item.FirstName}} {{item.LastName}}</h2>
+              <p>{{item.Email}} <a href="mailto:{{item.Email}}"><i class="icon ion-email"></i></a></p>
+            </ion-item>
+          </ion-list> 
+          <button ng-hide="usersLoaded" class="button button-block button-light" ng-click="loadMoreMeetings()">Load more</button>
+        </ion-content>
+    </ion-view>
+</script>
+
+<script id="locations.html" type="text/ng-template">
+	<ion-view title="Locations">
+		<ion-content>
+			<ion-nav-buttons side="left">
+				<button class="button button-icon button-clear ion-ios7-arrow-back" ng-click="back()"></button>
+			</ion-nav-buttons>
+			<ion-list>
+				<ion-item ng-repeat="loc in locations" class="item item-icon-right">
+				{{loc.Name}}
+				<i class="icon ion-edit" ng-click="edit({{loc.Id}})"></i>
+				<!-- <i class="icon ion-trash-a" ng-click="delete({{loc.Id}})"></i> -->
+				</ion-item>
+			</ion-list>
+			<button ng-hide="loaded" class="button button-block button-light" ng-click="loadMoreLocations()">Load more</button>
+		</ion-content>
+		<div class="tabs">
+			<a class="tab-item green-btn" ng-click="add()">+ Add Location</a>
+		</div>
+	</ion-view>
+</script>
+
+<script id="locations-add.html" type="text/ng-template">
+    <ion-view title="New Location">
+        <ion-content>
+          <div class="list">
+              <label class="item item-input item-stacked-label">
+                <span class="input-label">Title</span>
+                <input type="text" placeholder="" ng-model="location.Name" />
+              </label>
+          </div> 
+        </ion-content>
+        <div class="tabs">
+          <a class="tab-item green-btn" ng-click="save()">Save</a>
+          <a class="tab-item" ng-click="cancel()">Cancel</a>
+          <a class="tab-item" ng-show="location.Id" ng-click="delete()">Delete</a>
+        </div>
+    </ion-view>
+</script>
+
+<script id="my-profile.html" type="text/ng-template">
+    <ion-view title="My profile">
+        <ion-content padding="true">
+            <ion-nav-buttons side="left">
+                <button class="button button-icon button-clear ion-ios7-arrow-back" ng-click="back()"></button>
+            </ion-nav-buttons>
+			<!-- <h2>{{user.FirstName}} {{user.LastName}}</h2> -->
+			<p>Email: <b>{{user.Email}}</b></p>
+			<p>Role: <b>{{roles[user.Role]}}</b></p>
+      <p ng-show="password.success" style="color:#6c3">Password has been changed successfully</p>
+      <form ng-submit="changePassword()">
+        <div class="list list-inset">
+          <label class="item item-input">
+          <input type="password" placeholder="New password" ng-model="password.newPassword" />
+          </label>
+          <label class="item item-input">
+          <input type="password" placeholder="Repeat password" ng-model="password.newPasswordConfirm" />
+          </label>
+        </div>
+        <button class="button button-light button-block" type="submit">Change password</button>
+      </form>
+         </ion-content>
+    </ion-view>
+</script>
+
+<script id="add-comments.html" type="text/ng-template">
+	<ion-view title="Attendees notes">
+		<ion-content>
+			<div class="list">
+				<div class="item item-input item-stacked-label" ng-repeat="user in attendees">
+					<span class="input-label">{{user.FirstName}} {{user.LastName}}</span>
+					<input type="text" placeholder="Note 1" ng-model="user.Notes" />
+					<input type="text" placeholder="Note 2" ng-model="user.Notes2" />
+					<input type="text" placeholder="Note 3" ng-model="user.Notes3" />
+				</div>
+			</div>    
+		</ion-content>
+		<div class="tabs">
+			<a class="tab-item green-btn" ng-click="save()">Save</a>
+		</div>
+	</ion-view>
+</script>
+
+
+</body>
+</html>

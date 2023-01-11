@@ -1,0 +1,24 @@
+.ion-ios7-gear-outline { background: url(../img/ic_settings.png) no-repeat center center !important; }
+.ion-ios7-gear-outline:before {content:"\00a0\00a0";}
+.ion-ios7-plus-empty  { background: url(../img/ic_add.png) no-repeat center center !important; }
+.ion-ios7-plus-empty:before {content:"\00a0\00a0";}
+.ion-ios7-search { background: url(../img/ic_ios7_search.png) no-repeat center center !important; }
+.ion-ios7-search:before {content:"\00a0\00a0";}
+.ion-email { background: url(../img/ic_email.png) no-repeat center center !important; }
+.ion-email:before {content:"\00a0\00a0";}
+.ion-person  { background: url(../img/ic_profile.png) no-repeat center center !important; }
+.ion-person:before {content:"\00a0\00a0";}
+.ion-location { background: url(../img/ic_location.png) no-repeat center center !important; }
+.ion-location:before {content:"\00a0\00a0";}
+.ion-edit { background: url(../img/ic_edit.png) no-repeat center center !important; }
+.ion-edit:before {content:"\00a0\00a0";}
+.ion-plus-round { background: url(../img/ic_plus_round.png) no-repeat center center !important; }
+.ion-plus-round:before {content:"\00a0\00a0";}
+.ion-document-text {background: url(../img/ic_document_text.png) no-repeat center center !important; }
+.ion-document-text:before {content:"\00a0\00a0";}
+.ion-search {background: url(../img/ic_search.png) no-repeat center center !important; }
+.ion-search:before {content:"\00a0\00a0";}
+.ion-navicon {background: url(../img/ic_navicon.png) no-repeat center center !important; }
+.ion-navicon:before {content:"\00a0\00a0";}
+.ion-ios7-arrow-back {background: url(../img/ic_back.png) no-repeat center center !important;}
+.ion-ios7-arrow-back:before {content:"\00a0\00a0";}

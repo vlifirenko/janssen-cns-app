@@ -1,0 +1,36 @@
+c:\users\blood_000\documents\visual studio 2013\Projects\Jannsen\Jannsen\Bin\Debug\ApplicationIcon.png
+c:\users\blood_000\documents\visual studio 2013\Projects\Jannsen\Jannsen\Bin\Debug\Background.png
+c:\users\blood_000\documents\visual studio 2013\Projects\Jannsen\Jannsen\Bin\Debug\Jannsen.dll
+c:\users\blood_000\documents\visual studio 2013\Projects\Jannsen\Jannsen\Bin\Debug\Jannsen.pdb
+c:\users\blood_000\documents\visual studio 2013\Projects\Jannsen\Jannsen\Bin\Debug\AppManifest.xaml
+c:\users\blood_000\documents\visual studio 2013\Projects\Jannsen\Jannsen\Bin\Debug\Properties\WMAppManifest.xml
+c:\users\blood_000\documents\visual studio 2013\Projects\Jannsen\Jannsen\Bin\Debug\CordovaAppProj_Debug_AnyCPU.xap
+c:\users\blood_000\documents\visual studio 2013\Projects\Jannsen\Jannsen\obj\Debug\App.g.cs
+c:\users\blood_000\documents\visual studio 2013\Projects\Jannsen\Jannsen\obj\Debug\cordovalib\CordovaView.g.cs
+c:\users\blood_000\documents\visual studio 2013\Projects\Jannsen\Jannsen\obj\Debug\MainPage.g.cs
+c:\users\blood_000\documents\visual studio 2013\Projects\Jannsen\Jannsen\obj\Debug\Plugins\UI\AudioRecorder.g.cs
+c:\users\blood_000\documents\visual studio 2013\Projects\Jannsen\Jannsen\obj\Debug\Plugins\UI\ImageCapture.g.cs
+c:\users\blood_000\documents\visual studio 2013\Projects\Jannsen\Jannsen\obj\Debug\Plugins\UI\NotificationBox.g.cs
+c:\users\blood_000\documents\visual studio 2013\Projects\Jannsen\Jannsen\obj\Debug\Plugins\UI\VideoRecorder.g.cs
+c:\users\blood_000\documents\visual studio 2013\Projects\Jannsen\Jannsen\obj\Debug\Jannsen.g.resources
+c:\users\blood_000\documents\visual studio 2013\Projects\Jannsen\Jannsen\obj\Debug\Jannsen.dll
+c:\users\blood_000\documents\visual studio 2013\Projects\Jannsen\Jannsen\obj\Debug\Jannsen.pdb
+c:\users\blood_000\documents\visual studio 2013\Projects\Jannsen\Jannsen\obj\Debug\XapCacheFile.xml
+C:\Users\blood_000\Dropbox\wp8\Jannsen\Bin\Debug\ApplicationIcon.png
+C:\Users\blood_000\Dropbox\wp8\Jannsen\Bin\Debug\Background.png
+C:\Users\blood_000\Dropbox\wp8\Jannsen\Bin\Debug\Jannsen.dll
+C:\Users\blood_000\Dropbox\wp8\Jannsen\Bin\Debug\Jannsen.pdb
+C:\Users\blood_000\Dropbox\wp8\Jannsen\Bin\Debug\AppManifest.xaml
+C:\Users\blood_000\Dropbox\wp8\Jannsen\Bin\Debug\Properties\WMAppManifest.xml
+C:\Users\blood_000\Dropbox\wp8\Jannsen\Bin\Debug\CordovaAppProj_Debug_AnyCPU.xap
+C:\Users\blood_000\Dropbox\wp8\Jannsen\obj\Debug\App.g.cs
+C:\Users\blood_000\Dropbox\wp8\Jannsen\obj\Debug\cordovalib\CordovaView.g.cs
+C:\Users\blood_000\Dropbox\wp8\Jannsen\obj\Debug\MainPage.g.cs
+C:\Users\blood_000\Dropbox\wp8\Jannsen\obj\Debug\Plugins\UI\AudioRecorder.g.cs
+C:\Users\blood_000\Dropbox\wp8\Jannsen\obj\Debug\Plugins\UI\ImageCapture.g.cs
+C:\Users\blood_000\Dropbox\wp8\Jannsen\obj\Debug\Plugins\UI\NotificationBox.g.cs
+C:\Users\blood_000\Dropbox\wp8\Jannsen\obj\Debug\Plugins\UI\VideoRecorder.g.cs
+C:\Users\blood_000\Dropbox\wp8\Jannsen\obj\Debug\Jannsen.g.resources
+C:\Users\blood_000\Dropbox\wp8\Jannsen\obj\Debug\Jannsen.dll
+C:\Users\blood_000\Dropbox\wp8\Jannsen\obj\Debug\Jannsen.pdb
+C:\Users\blood_000\Dropbox\wp8\Jannsen\obj\Debug\XapCacheFile.xml

@@ -1,0 +1,52 @@
+#ANDROID
+
+*OS: Ubuntu 14.10
+
+1. Install Node.js:
+> $ sudo apt-get install nodejs
+2. Install latest Cordova and Ionic command-line tools:
+> $ npm install -g cordova ionic
+3. Create an Ionic project:
+> $ ionic start janssen blank
+4. Copy www/ folder into janssen/www/
+5. Build app:
+> $ cd janssen
+> $ ionic platform add android
+> $ ionic build android
+6. Start Android project from janssen/platform/android
+   
+#IOS
+
+*OS: MacOS
+
+1. Install Node.js:
+> $ sudo apt-get install nodejs
+2. Install latest Cordova and Ionic command-line tools:
+> $ npm install -g cordova ionic
+3. Create an Ionic project:
+> $ ionic start janssen blank
+4. Copy www/ folder into janssen/www/
+5. Build app:
+> $ cd janssen
+> $ ionic platform add ios
+> $ ionic build ios
+6. Start Xcode project from janssen/platform/ios/
+
+#WINDOWS PHONE 8
+
+*OS: Windows 8.1
+
+1. Install Visual Studio 2013 Community
+2. Run Visual Studio. File->New->Project. Templates->Visual C#->Store Apps->Windows Phone Apps, select template "HTML 5 App (Windows Phone Silverlight)"
+3. Copy www/ folder into Html/ in Solution Explorer.
+4. Build solution.
+
+#WINDOWS PHONE 7
+
+*OS: Windows 7
+
+1. Install Visual Studio Express 2010 
+2. Downolad Cordova developer tools from the PhoneGap Web site
+3. Run Visual Studio. File->New->Project. Visual C#->Silverlight for Windows Phone, select template "Cordova-x.x.x-Starter"
+4. Copy www/ folder into Html/ in Solution Explorer.
+5. Build solution.
